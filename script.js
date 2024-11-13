@@ -12,28 +12,21 @@ document.getElementById("contactForm").addEventListener("submit", function(event
     } else {
         formStatus.textContent = "Form submitted successfully!";
         formStatus.style.color = "green";
+
+        // Send form data to the server using fetch
+        fetch('/contact', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: new URLSearchParams({ name: name, email: email })
+        })
+        .then(response => response.text())
+        .then(data => {
+            formStatus.textContent = data; // Display server response
+        })
+        .catch(error => {
+            formStatus.textContent = "There was an error submitting the form.";
+            formStatus.style.color = "red";
+            console.error("Error:", error);
+        });
     }
 });
-
-const express = require('express');
-const bodyParser = require('body-parser');
-const app = express();
-const PORT = 3000;
-
-// Serve static files from the 'public' directory
-app.use(express.static('public'));
-
-// Middleware to parse form data
-app.use(bodyParser.urlencoded({ extended: true }));
-
-// Handle form submissions
-app.post('/contact', (req, res) => {
-    const { name, email, message } = req.body;
-    console.log(`Name: ${name}, Email: ${email}, Message: ${message}`);
-    res.send('Thank you for contacting us! Your message has been received.');
-});
-
-app.listen(PORT, () => {
-    console.log(`Server is running on http://localhost:${3000}`);
-});
-

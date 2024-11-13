@@ -9,18 +9,14 @@ app.use(express.static('public'));
 // Middleware to parse form data
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// Define a POST route to handle form submissions from contact.html
+// Handle form submissions
 app.post('/contact', (req, res) => {
-    const { name, email, message } = req.body;
-
-    // Log the form data to the console
-    console.log(`Name: ${name}, Email: ${email}, Message: ${message}`);
-
-    // Respond with a thank-you message
+    const { name, email } = req.body;
+    console.log(`Name: ${name}, Email: ${email}`);
     res.send('Thank you for contacting us! Your message has been received.');
 });
 
-// Start the server and listen on a specified port
+// Start the server
 app.listen(PORT, () => {
-    console.log(`Server is running on http://localhost:${3000}`);
+    console.log(`Server is running on http://localhost:${PORT}`);
 });
